@@ -25,6 +25,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
+import axios from 'axios'
 @Component
 export default class Header extends Vue {
   activeMenuItem: string = 'loginDialog'
@@ -37,6 +38,14 @@ export default class Header extends Vue {
     this.visibleLoginDialog = true
   }
   submitLogin (): void {
+    axios.post('/hub/login', this.loginForm)
+      .then(function (response) {
+        // eslint-disable-next-line
+        console.log(response)
+      }).catch(function (error) {
+        // eslint-disable-next-line
+        console.log(error)
+      })
   }
 }
 </script>
