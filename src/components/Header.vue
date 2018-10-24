@@ -74,6 +74,8 @@ export default class Header extends Vue {
           self.showTip('登录失败：未知错误', 'error')
         } else if (response.data.code === 200001) { // Login Failed
           self.showTip('登录失败：用户名或密码错误', 'error')
+        } else { // Unknow Error
+          self.showTip('登录失败：未知错误', 'error')
         }
         self.loginStatus = true
       }).catch(function (error) {
@@ -86,9 +88,16 @@ export default class Header extends Vue {
     var self = this
     axios.post('/hub/logout', {})
       .then(function (response) {
-        self.loginStatus = false
-        self.showTip('已退出登录', 'success')
+        if (response.data.code === 0) {
+          self.loginStatus = false
+          self.showTip('已退出登录', 'success')
+          self.$router.push('/')
+        } else {
+          self.showTip('退出失败：未知错误', 'error')
+        }
       }).catch(function (error) {
+        // eslint-disable-next-line
+        console.log(error)
         self.showTip('退出失败', 'error')
       })
   }
@@ -96,12 +105,10 @@ export default class Header extends Vue {
     var self = this
     axios.get('/hub/session')
       .then(function (response) {
-        // eslint-disable-next-line
-        console.log(response.status)
         self.loginStatus = true
       }).catch(function (error) {
         // eslint-disable-next-line
-        console.log(error.response.status)
+        console.log(error)
         self.loginStatus = false
       })
   }
