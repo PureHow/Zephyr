@@ -40,6 +40,10 @@ export default class Header extends Vue {
     username: '',
     password: ''
   }
+  cleanLoginForm (): void {
+    this.loginForm.username = ''
+    this.loginForm.password = ''
+  }
   showLoginDialog (): void {
     this.visibleLoginDialog = true
   }
@@ -62,11 +66,9 @@ export default class Header extends Vue {
     var self = this
     axios.post('/hub/login', this.loginForm)
       .then(function (response) {
-        // eslint-disable-next-line
-        console.log(response)
-        // eslint-disable-next-line
-        console.log(response.data.code)
         if (response.data.code === 0) { // OK
+          self.cleanLoginForm()
+          self.visibleLoginDialog = flase
           self.showTip('登录成功', 'success')
         } else if (response.data.code === 100000) { // Unknow Error
           self.showTip('登录失败：未知错误', 'error')
