@@ -68,7 +68,7 @@ export default class Header extends Vue {
       .then(function (response) {
         if (response.data.code === 0) { // OK
           self.cleanLoginForm()
-          self.visibleLoginDialog = flase
+          self.visibleLoginDialog = false
           self.showTip('登录成功', 'success')
         } else if (response.data.code === 100000) { // Unknow Error
           self.showTip('登录失败：未知错误', 'error')
